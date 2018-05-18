@@ -4,19 +4,25 @@
     $default_table = 'new_table';
     $table_name = '';
     $fields = [];
-    $tables =[];
-    $params = [];
-    
-    if (isset($_POST)) {
-        $params = filter_input_array(INPUT_POST, $_POST);
-        unset($_POST);
+    $tables = [];
+    $request_params = [];
+
+    if ((!empty($_GET)) && (empty($_POST))) {
+        $request_params = filter_input_array(INPUT_GET, $_GET);
+        unset($_GET);
     } else {
-        $params['describe'] = $default_table;
+        if (isset($_POST)) {
+            unset($_GET);
+            $request_params = filter_input_array(INPUT_POST, $_POST);
+            unset($_POST);
+        }
     }
-    var_dump($params);
+    
+    do_command($request_params);
     $tables = get_tables();
-    $fields = do_command($params);
-    unset($params);
+    $table_name = get_current_table($request_params);
+    $fields = get_fields($table_name);
+    unset($request_params);
 ?>
 
 <html lang="ru">
@@ -41,21 +47,26 @@
                     Таблицы
                     <?php foreach($tables as $table): ?>
                     <li>
-                        <a href=""><?=$table[0];?></a>
+                        <a href="?action=edit&table=<?=$table[0];?>"><?=$table[0];?></a>
                     </li>
                     <?php endforeach; ?>
                 </ul>
             </div>
             <div class="form-container">
                 <form method="post">
-                    <input type="text" name="table_name" placeholder="имя таблицы">
+                    <input type="text" name="table_name" value="<?=$table_name;?>">
+                    <input type="submit" name="delete_table" value="Удалить таблицу"><br>
                     <select>
                         <?php foreach($fields as $field): ?>
-                            <option value=<?=$field['col_name'];?>></option>
+                            <option value="<?=$field['Field'];?>"><?=$field['Field'];?></option>
                         <?php endforeach; ?>
                     </select>
-                    <input type="text" name="сol_name" placeholder="имя поля">
-                    <input type="text" name="col_type" placeholder="тип поля">
+                    <input type="text" name="сol_name" placeholder="новое имя поля">
+                    <select name="col_type">
+                        <option value="1">INT</option>
+                        <option value="2">VARCHAR</option>
+                        <option value="3">FLOAT</option>
+                    </select>
                     <input type="submit" name="change_col" value="Изменить">
                 </form>
             </div>
