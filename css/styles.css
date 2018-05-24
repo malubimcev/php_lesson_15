@@ -22,12 +22,26 @@ body {
     padding: 2px;
 }
 
+.fields-info {
+    padding: 3px;
+    border: 2px solid #555555;
+}
+
+.field-name,
+.field-type,
+.field-new-name,
+.field-new-type {
+    display: inline-block;
+    width: 200px;
+    padding: 2px;
+}
+
 .db-view {
     display: block;
     width: 100%;
     margin: 5px auto; 
     padding: 5px;
-    border: 2px solid #555555;
+    border: 2px solid #888888;
 }
 
 h1, h2, h3 {

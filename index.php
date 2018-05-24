@@ -53,24 +53,36 @@
                 </ul>
             </div>
             <div class="form-container">
+                <?php if(!empty($table_name)):?>
                 <form method="post">
                     <input type="text" name="table_name" value="<?=$table_name;?>">
-                    <input type="submit" name="delete_table" value="Удалить таблицу"><br>
-                    <select>
-                        <?php foreach($fields as $field): ?>
-                            <option value="<?=$field['Field'];?>"><?=$field['Field'];?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="text" name="сol_name" placeholder="новое имя поля">
-                    <select name="col_type">
-                        <option value="1">INT</option>
-                        <option value="2">VARCHAR</option>
-                        <option value="3">FLOAT</option>
-                    </select>
-                    <input type="submit" name="change_col" value="Изменить">
+                    <input type="submit" name="delete_table" value="Удалить таблицу"><br><br>
                 </form>
+                <div class="fields-info">
+                    <div class="form-container">
+                        <label class="field-name">Имя поля</label>
+                        <label class="field-type">Тип поля</label>
+                        <label class="field-new-name">Новое имя</label>
+                        <label class="field-new-type">Новый тип</label>
+                    </div>
+                    <?php foreach($fields as $field): ?>
+                    <form method="post">
+                        <input type="hidden" name="table_name" value="<?=$table_name;?>">
+                        <input type="text" class="field-name" name="сol_name" value="<?=$field['Field'];?>">
+                        <input type="text" class="field-type" name="сol_type" value="<?=$field['Type'];?>">
+                        <input type="text" class="field-new-name" name="new_сol_name" placeholder="новое имя поля">
+                        <select class="field-new-type" name="new_col_type">
+                            <option value="<?=$field['Type'];?>"><?=$field['Type'];?></option>
+                            <option value="int">INT</option>
+                            <option value="varchar(255)">VARCHAR</option>
+                            <option value="float">FLOAT</option>
+                        </select>
+                        <input type="submit" name="change_col" value="Изменить"><br>
+                    </form>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
             </div>
         </section>
     </body>
 </html>
-

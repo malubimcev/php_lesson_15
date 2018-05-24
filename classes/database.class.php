@@ -40,14 +40,15 @@ class Database
         return; 
     }
     
-    public function change_column_name($table_name, $col_name, $new_col_name)
+    public function change_column_name($table_name, $col_name, $new_col_name, $col_type)
     {
         $db = $this -> get_connection();
         $request = "ALTER TABLE
                         $table_name 
                     CHANGE
                         $col_name
-                        $new_col_name";
+                        $new_col_name
+                        $col_type";
         $params = [];
         $this -> do_request($request, $params);
         return; 
@@ -63,7 +64,7 @@ class Database
                         $col_type";
         $params = [];
         $this -> do_request($request, $params);
-        return; 
+        return;
     }
     
     public function get_tables()
@@ -94,7 +95,7 @@ class Database
     {
         if ($this ->is_not_hidden($table_name)) {
             $db = $this -> get_connection();
-            $request = 'DROP TABLE '.$table_name;
+            $request = 'DROP TABLE IF EXISTS '.$table_name;
             $params = [];
             return $this -> do_request($request, $params);
         }
@@ -162,6 +163,5 @@ class Database
             return FALSE;
         }
     }
-   
       
 }//===end class===
